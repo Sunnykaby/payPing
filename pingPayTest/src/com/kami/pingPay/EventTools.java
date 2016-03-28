@@ -21,10 +21,10 @@ import com.pingplusplus.model.Webhooks;
  * 
  * Event 事件参考文档：https://pingxx.com/document/api#api-event
  * 
- * 该实例演示如何查询 Event 
+ * 查询 Event 
  * 
  */
-public class EventExample {
+public class EventTools {
 	/**
 	 * pingpp 管理平台对应的API key
 	 */
@@ -39,16 +39,6 @@ public class EventExample {
 	 */
     public static String eventid ="charge.succeeded";//暂时没办法测试，这个是需要挂载服务器和公网接口上去测试
 
-    public static void main(String args[]) {
-        Pingpp.apiKey = apiKey;
-        EventExample eventExample = new EventExample();
-        System.out.println("---------查询event");
-        eventExample.retrieve(eventid);
-        System.out.println("---------查询event列表");
-        eventExample.all();
-    }
-
-
     /**
      * 根据 ID 查询 Evnet
      * 
@@ -58,6 +48,7 @@ public class EventExample {
      */
     public void retrieve(String id) {
         try {
+        	Pingpp.apiKey = apiKey;
             Event event = Event.retrieve(id);
             System.out.println(event);
             //解析webhooks 可以采用如下方法
@@ -92,6 +83,7 @@ public class EventExample {
      * 
      */
     public void all() {
+    	Pingpp.apiKey = apiKey;
         Map<String, Object> params = new HashMap<String, Object>();
         //params.put("limit", 3);
         try {
@@ -109,6 +101,15 @@ public class EventExample {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+    }
+    public static void main(String args[]) {
+        Pingpp.apiKey = apiKey;
+        EventTools eventExample = new EventTools();
+        System.out.println("---------查询event");
+        eventExample.retrieve(eventid);
+        System.out.println("---------查询event列表");
+        eventExample.all();
     }
 
 }

@@ -19,12 +19,12 @@ import com.pingplusplus.model.ChargeCollection;
 /**
  * Charge 对象相关示例
  * 
- * 该实例程序演示了如何从 ping++ 服务器获得 charge ，查询 charge。
+ * 从 ping++ 服务器获得 charge ，查询 charge。
  */
-public class ChargeExample {
+public class ChargeTools {
 
 	/**
-	 * pingpp 管理平台对应的 API key
+	 * pingpp 管理平台对应的 API key，之后统一改为配置文件
 	 */
 	public static String apiKey = "sk_test_a9yzPSGuvTi9a1e5W5Ka1abP";
 	/**
@@ -32,26 +32,65 @@ public class ChargeExample {
 	 */
 	public static String appId = "app_G8iz10yLufbDvDqb";
 	
-    public static void main(String[] args) {
+   
+    /**
+     * 
+     * @Description: TODO
+     * @param @param chargeMap
+        chargeMap.put("amount", 100);//该订单总金额
+        chargeMap.put("currency", "cny");//该订单金额的单位
+        chargeMap.put("subject", "class1");//商品的标题
+        chargeMap.put("body", "课程1");//商品描述信息
+        chargeMap.put("order_no", "123456789");//商品订单号
+        chargeMap.put("channel", "alipay");//支付渠道
+        chargeMap.put("client_ip", "127.0.0.1");
+        chargeMap.put("time_expire", 1458799865);//该订单的有效期（支付之前）
+        chargeMap.put("description", "This is a test charge");
+        chargeMap.put("success_url", "http://182.92.69.5/pingPaytest/webhooks");
+     * @param @return   
+     * @return Charge  
+     * @throws
+     * @author Kami_SDY
+     * @date 2016-3-28
+     */
+    public Charge charge(Map<String, Object> chargeMap) {
+        Charge charge = null;
         Pingpp.apiKey = apiKey;
         Pingpp.privateKeyPath = "key/rsa_private_key.pem";
-        ChargeExample ce = new ChargeExample();
-        System.out.println("---------创建 charge");
-        Charge charge = ce.charge();//会返回在Ping++系统中创建的charge对象
-        System.out.println("---------查询 charge");
-        ce.retrieve(charge.getId());
-        System.out.println("---------查询 charge列表");
-        ce.all();
+//        Map<String, Object> chargeMap = new HashMap<String, Object>();
+//        chargeMap.put("amount", 100);//该订单总金额
+//        chargeMap.put("currency", "cny");//该订单金额的单位
+//        chargeMap.put("subject", "class1");//商品的标题
+//        chargeMap.put("body", "课程1");//商品描述信息
+//        chargeMap.put("order_no", "123456789");//商品订单号
+//        chargeMap.put("channel", "alipay");//支付渠道
+//        chargeMap.put("client_ip", "127.0.0.1");
+//        chargeMap.put("time_expire", 1458799865);//该订单的有效期（支付之前）
+//        chargeMap.put("description", "This is a test charge");
+//        chargeMap.put("success_url", "http://182.92.69.5/pingPaytest/webhooks");
+        Map<String, String> app = new HashMap<String, String>();
+        app.put("id",appId);
+        chargeMap.put("app", app);
+        try {
+            //发起交易请求
+            charge = Charge.create(chargeMap);
+            System.out.println(charge);
+        } catch (PingppException e) {
+            e.printStackTrace();
+        }
+        return charge;
     }
-
     /**
+     * 实例代码（无用，参考其传参）
      * 创建 Charge
-     * 
+     * 在提供charge的地方，需要添加apiKey
      * 创建 Charge 用户需要组装一个 map 对象作为参数传递给 Charge.create();
      * map 里面参数的具体说明请参考：https://pingxx.com/document/api#api-c-new
      * @return
      */
     public Charge charge() {
+    	Pingpp.apiKey = apiKey;
+        Pingpp.privateKeyPath = "key/rsa_private_key.pem";
         Charge charge = null;
         Map<String, Object> chargeMap = new HashMap<String, Object>();
         chargeMap.put("amount", 100);//该订单总金额
@@ -61,7 +100,7 @@ public class ChargeExample {
         chargeMap.put("order_no", "123456789");//商品订单号
         chargeMap.put("channel", "alipay");//支付渠道
         chargeMap.put("client_ip", "127.0.0.1");
-        chargeMap.put("time_expire", 1458799865);//该订单的有效期（支付之前）
+        chargeMap.put("time_expire", 1459799865);//该订单的有效期（支付之前）
         chargeMap.put("description", "This is a test charge");
 //        chargeMap.put("success_url", "http://182.92.69.5/pingPaytest/webhooks");
         Map<String, String> app = new HashMap<String, String>();
@@ -146,4 +185,16 @@ public class ChargeExample {
 		}
         return chargeCollection;
     }
+    
+    public static void main(String[] args) {
+//      Pingpp.apiKey = apiKey;
+//      Pingpp.privateKeyPath = "key/rsa_private_key.pem";
+      ChargeTools ce = new ChargeTools();
+      System.out.println("---------创建 charge");
+      Charge charge = ce.charge();//会返回在Ping++系统中创建的charge对象
+      System.out.println("---------查询 charge");
+      ce.retrieve(charge.getId());
+      System.out.println("---------查询 charge列表");
+      ce.all();
+  }
 }

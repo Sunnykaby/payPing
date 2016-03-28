@@ -1,4 +1,4 @@
-package com.kami.tools;
+package com.kami.pingPay;
 
 import com.pingplusplus.model.Event;
 import com.pingplusplus.model.Webhooks;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
-//
+//暂时写了一个post的接口，进一步需要测试线上的webhooks
 public class ServletForPay extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF8");
